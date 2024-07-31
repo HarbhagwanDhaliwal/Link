@@ -1,0 +1,8 @@
+# Ignore PyCharm project files
+.idea/
+
+# Ignore Python cache files
+__pycache__/
+
+# Add other files or directories to ignore
+*.pyc
