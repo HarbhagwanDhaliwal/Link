@@ -41,6 +41,8 @@ async def hello(interaction: discord.Interaction):
 async def sql(interaction: discord.Interaction, query: str):
     """Executes an SQL query and returns the result."""
     followup = None
+    total_columns = 0
+    total_rows = 0
     try:
         # Defer the interaction
         await interaction.response.defer()
@@ -56,7 +58,7 @@ async def sql(interaction: discord.Interaction, query: str):
                 columns = response['Columns']
                 column_names = [item['name'] for item in columns]
                 data = response['Data']
-                df = get_table(column_names, data)
+                (df, total_columns, total_rows) = get_table(column_names, data)
                 table_image = save_dataframe_as_image(df)
                 result_str = table_image  # Set result_str to the image file path
             else:
@@ -67,8 +69,10 @@ async def sql(interaction: discord.Interaction, query: str):
         # Check if result_str is a file path or a string
         if type(result_str) is str and os.path.isfile(result_str):
             await followup.edit(content=(
-                "Due to Discord limits, we show only the first 4 columns and max 20 rows.\n\n"
-                "Use a `SELECT` SQL query to choose specific columns.\n\n"
+                f"We found total {total_columns} columns and {total_rows} rows. "
+                "We only show max 4 columns and max 20 rows here.\n"
+                "You may use a `SELECT` clause for specific columns in sql query. \n "
+                "You may use a `/sql_excel` command to get all data in Excel."
             ))
 
             # Read the file as bytes
@@ -104,7 +108,7 @@ async def sql(interaction: discord.Interaction, query: str):
 
 
 @client.tree.command(name="sql_excel")
-@app_commands.describe(query='The SQL query you want to execute')
+@app_commands.describe(query='The SQL query you want to execute and get result in excel')
 async def sql_excel(interaction: discord.Interaction, query: str):
     """Executes an SQL query and sends the result as an Excel file."""
     followup = None
@@ -123,7 +127,16 @@ async def sql_excel(interaction: discord.Interaction, query: str):
                 columns = response['Columns']
                 column_names = [item['name'] for item in columns]
                 data = response['Data']
-                df = get_table(column_names, data, max_column=100, max_row=1000, hidden=False)
+
+                # Prepare DataFrame for Excel file
+                (df, total_columns, total_rows) = get_table(column_names, data, max_column=None,
+                                                            max_row=None, hidden=False)
+
+                # Send column and row information
+                await followup.edit(content=(
+                    f"We found total {total_columns} columns and {total_rows} rows. "
+                    "Please download the below excel file."
+                ))
 
                 # Generate a random filename
                 filename = generate_random_filename()
@@ -139,12 +152,13 @@ async def sql_excel(interaction: discord.Interaction, query: str):
                 discord_file = discord.File(fp=excel_buffer, filename=filename)
                 await interaction.followup.send(file=discord_file)
 
-                # Cleanup: Close buffer and delete file
+                # Cleanup: Close buffer
                 excel_buffer.close()
 
             else:
                 result_str = response  # String result
-                await followup.edit(content=f"Query result: {result_str}")
+
+                await followup.edit(content=f'```{result_str}```')
 
         else:
             await followup.edit(content="Failed to retrieve API data.")

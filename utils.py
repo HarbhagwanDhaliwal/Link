@@ -66,17 +66,23 @@ def get_table(columns, data, max_column=MAX_COLUMN_SHOW, max_row=MAX_ROW_SHOW, h
     # Create a DataFrame
     df = pd.DataFrame(data, columns=columns)
 
+    # Get total number of columns and rows before filtering
+    total_columns = df.shape[1]
+    total_rows = df.shape[0]
+
     # Limit the number of columns to the first `max_column` columns
-    df = df.iloc[:, :max_column]
+    if max_column is not None:
+        df = df.iloc[:, :max_column]
 
     # Limit the number of rows to the first `max_row` rows
-    df = df.head(max_row)
+    if max_row is not None:
+        df = df.head(max_row)
 
     # Truncate each cell in the DataFrame
     if hidden:
         df = df.apply(lambda col: col.map(lambda x: truncate_text(str(x))))
 
-    return df
+    return df, total_columns, total_rows
 
 
 def save_dataframe_as_image(df, file_name=None, figsize=(10, 2), file_extension='png'):
@@ -127,6 +133,7 @@ def split_message(content, limit=1900):
     return [content[i:i + limit] for i in range(0, len(content), limit)]
 
 
-def generate_random_filename(extension=".xlsx"):
-    """Generate a random filename with the given extension."""
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=10)) + extension
+def generate_random_filename(prefix="ChainBase_", length=10):
+    """Generate a random filename with a specified prefix."""
+    random_str = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+    return f"{prefix}{random_str}.xlsx"
