@@ -37,7 +37,7 @@ async def hello(interaction: discord.Interaction):
 
 
 @client.tree.command(name="sql")
-@app_commands.describe(query='The SQL query you want to execute')
+@app_commands.describe(query='Execute the SQL query to show up to 4 columns and 20 rows')
 async def sql(interaction: discord.Interaction, query: str):
     """Executes an SQL query and returns the result."""
     followup = None
@@ -68,11 +68,10 @@ async def sql(interaction: discord.Interaction, query: str):
 
         # Check if result_str is a file path or a string
         if type(result_str) is str and os.path.isfile(result_str):
+
             await followup.edit(content=(
-                f"We found total {total_columns} columns and {total_rows} rows. "
-                "We only show max 4 columns and max 20 rows here.\n"
-                "You may use a `SELECT` clause for specific columns in sql query. \n "
-                "You may use a `/sql_excel` command to get all data in Excel."
+                f":mag: We found {total_columns} columns and {total_rows} rows . (preview below :arrow_down:)\n \n"
+                ":bar_chart: *Preview*: \n"
             ))
 
             # Read the file as bytes
@@ -108,7 +107,7 @@ async def sql(interaction: discord.Interaction, query: str):
 
 
 @client.tree.command(name="sql_excel")
-@app_commands.describe(query='The SQL query you want to execute and get result in excel')
+@app_commands.describe(query='Execute the SQL query and get the result in an Excel file.')
 async def sql_excel(interaction: discord.Interaction, query: str):
     """Executes an SQL query and sends the result as an Excel file."""
     followup = None
@@ -134,8 +133,8 @@ async def sql_excel(interaction: discord.Interaction, query: str):
 
                 # Send column and row information
                 await followup.edit(content=(
-                    f"We found total {total_columns} columns and {total_rows} rows. "
-                    "Please download the below excel file."
+                    f":mag: We found {total_columns} columns and {total_rows} rows.\n \n"
+                    "       Please download the Excel file below.  :inbox_tray:  "
                 ))
 
                 # Generate a random filename
