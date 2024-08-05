@@ -71,7 +71,7 @@ async def sql(interaction: discord.Interaction, query: str):
 
             await followup.edit(content=(
                 f":mag: We found {total_columns} columns and {total_rows} rows . (preview below :arrow_down:)\n \n"
-                ":bar_chart: *Preview*: \n"
+                ":bar_chart:"
             ))
 
             # Read the file as bytes
@@ -133,8 +133,8 @@ async def sql_excel(interaction: discord.Interaction, query: str):
 
                 # Send column and row information
                 await followup.edit(content=(
-                    f":mag: We found {total_columns} columns and {total_rows} rows.\n \n"
-                    "       Please download the Excel file below.  :inbox_tray:  "
+                    f":mag: We found {total_columns} columns and {total_rows} rows. \n\n"
+                    "       Download below :down_arrow:"
                 ))
 
                 # Generate a random filename
