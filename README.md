@@ -36,9 +36,9 @@ cd Link
 Set up the following environment variables in your system:
 
 ```bash
-BOT_TOKEN=your_discord_bot_token
-CHAINBASE_API_URL=https://api.chainbase.com/api/v1
-CHAINBASE_API_WEB3_URL=https://api.chainbase.online/v1
+DISCORD_BOT_TOKEN=your_discord_bot_token
+CHAINBASE_SQL_BASE_URL=https://api.chainbase.com/api/v1
+CHAINBASE_WEB3_BASE_URL=https://api.chainbase.online/v1
 CHAINBASE_API_KEY=your_chainbase_api_key
 ```
 
