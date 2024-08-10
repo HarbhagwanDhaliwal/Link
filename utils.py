@@ -58,7 +58,7 @@ def truncate_text(text, max_length=15, stars_count=10):
     return text
 
 
-def format_data_for_discord(columns, data):
+def format_data_for_discord(columns, data, max_length=15, stars_count=10):
     """
     Format the data into a Discord-friendly string.
 
@@ -71,7 +71,7 @@ def format_data_for_discord(columns, data):
     """
     formatted_lines = []
     for col, value in zip(columns, data):
-        truncated_value = truncate_text(str(value))
+        truncated_value = truncate_text(str(value), max_length, stars_count)
         formatted_lines.append(f"{col}: {truncated_value}")
 
     return "\n".join(formatted_lines)

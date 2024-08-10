@@ -2,10 +2,13 @@ import aiohttp
 import asyncio
 import logging
 
-from config import CHAINBASE_API_URL, CHAINBASE_API_KEY, API_TIME_LIMIT
+from config import CHAINBASE_API_URL, CHAINBASE_API_KEY, API_TIME_LIMIT, API_TIMEOUT
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Timeout for API requests
+TIMEOUT = aiohttp.ClientTimeout(total=API_TIMEOUT)
 
 
 # Function to execute the query
@@ -16,7 +19,7 @@ async def execute_query(sql_query):
     }
     data = {"sql": sql_query}
 
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(timeout=TIMEOUT) as session:
         try:
             async with session.post(f"{CHAINBASE_API_URL}/query/execute", json=data, headers=headers) as response:
                 return await response.json()
@@ -32,7 +35,7 @@ async def check_status(execution_id):
         "Content-Type": "application/json"
     }
 
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(timeout=TIMEOUT) as session:
         try:
             async with session.get(f"{CHAINBASE_API_URL}/execution/{execution_id}/status", headers=headers) as response:
                 return await response.json()
@@ -48,7 +51,7 @@ async def get_results(execution_id):
         "Content-Type": "application/json"
     }
 
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(timeout=TIMEOUT) as session:
         try:
             async with session.get(f"{CHAINBASE_API_URL}/execution/{execution_id}/results", headers=headers) as response:
                 return await response.json()
