@@ -1,6 +1,6 @@
 from tabulate import tabulate
 import pandas as pd
-from config import MAX_COLUMN_SHOW, MAX_ROW_SHOW
+from config import MAX_COLUMN_SHOW, MAX_ROW_SHOW, ChainNetworkID
 import matplotlib.pyplot as plt
 import uuid
 import os
@@ -8,6 +8,7 @@ import tempfile
 import random
 import io
 import string
+from enum import Enum
 
 
 def format_as_table(columns, data):
@@ -21,6 +22,13 @@ def format_dataframe_table(df):
     # Convert the DataFrame to a text-based table
     table_str = tabulate(df, headers='keys', tablefmt='grid')
     return table_str
+
+
+def format_db(df):
+    df = pd.DataFrame(data)
+    # Formatting the DataFrame for Discord
+    formatted_data = "\n".join([f"{col} : {df.at[0, col]}" for col in df.columns])
+    return formatted_data
 
 
 def format_table(columns, data):
@@ -48,6 +56,25 @@ def truncate_text(text, max_length=15, stars_count=10):
         truncated_text = text[-max_length:]  # Get the last part of the text
         return '*' * stars_count + truncated_text  # Prepend stars
     return text
+
+
+def format_data_for_discord(columns, data):
+    """
+    Format the data into a Discord-friendly string.
+
+    Parameters:
+    - columns: List of column names.
+    - data: List of values corresponding to the columns.
+
+    Returns:
+    - A formatted string for Discord.
+    """
+    formatted_lines = []
+    for col, value in zip(columns, data):
+        truncated_value = truncate_text(str(value))
+        formatted_lines.append(f"{col}: {truncated_value}")
+
+    return "\n".join(formatted_lines)
 
 
 def get_table(columns, data, max_column=MAX_COLUMN_SHOW, max_row=MAX_ROW_SHOW, hidden=True):
@@ -137,3 +164,18 @@ def generate_random_filename(prefix="ChainBase_", length=10):
     """Generate a random filename with a specified prefix."""
     random_str = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
     return f"{prefix}{random_str}.xlsx"
+
+
+def get_network_id(chain_name):
+    # Convert the input to lowercase
+    chain_name_lower = chain_name.lower()
+
+    # Check if the input is numeric and return as integer
+    if chain_name_lower.isdigit():
+        return int(chain_name_lower)
+
+    # Convert Enum names to lowercase for case-insensitive comparison
+    chain_network_ids = {name.lower(): member.value for name, member in ChainNetworkID.__members__.items()}
+
+    # Return the network ID if the chain name exists
+    return chain_network_ids.get(chain_name_lower, None)
