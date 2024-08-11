@@ -19,6 +19,7 @@ Link bot allows you to interact with blockchain data using a set of powerful com
 - **/get_token_price**: Get the price of a specified token.
 - **/get_nft_metadata**: Get the metadata associated with the specified NFT.
 - **/get_domain_metadata**: Resolve an ENS domain to its associated address.
+- **/help**: Provides information about available commands.
 
 ## Setup and Installation
 
