@@ -77,8 +77,9 @@ async def sql(interaction: discord.Interaction, query: str):
         if type(result_str) is str and os.path.isfile(result_str):
 
             await followup.edit(content=(
-                f"  :mag_right:  We found `{total_columns}` columns and `{total_rows}` rows."
-                f" (preview below :arrow_down: )\n \n"
+                f"  🔍 ** Query Executed: ** `{query}` \n\n"
+                f"  📊 ** Results: ** We found `{total_columns}` columns and `{total_rows}` "
+                f"rows. [Preview below ⬇️]"
             ))
 
             # Read the file as bytes
@@ -87,7 +88,7 @@ async def sql(interaction: discord.Interaction, query: str):
 
             # Send the image file as bytes
             discord_file = discord.File(fp=io.BytesIO(file_bytes), filename=os.path.basename(result_str))
-            await interaction.followup.send(content=":bar_chart:  **Preview**:", file=discord_file)
+            await interaction.followup.send(content="🖼️  **Preview**:", file=discord_file)
 
             # Remove the temporary file after sending
             os.remove(result_str)
@@ -96,11 +97,11 @@ async def sql(interaction: discord.Interaction, query: str):
             result_str = str(result_str)
             chunks = split_message(result_str)
 
-            await followup.edit(content=f'```{chunks[0]}```')
+            await followup.edit(content=f'🔍 ** Query Executed: ** `{query} \n`')
 
             # Send remaining chunks as follow-up messages
             chunk_count = 0
-            for chunk in chunks[1:]:
+            for chunk in chunks:
                 chunk_count += 1
                 await interaction.followup.send(f'```{chunk}```')
                 if chunk_count >= MAX_TABLE_SHOW:
@@ -140,7 +141,8 @@ async def sql_excel(interaction: discord.Interaction, query: str):
 
                 # Send column and row information
                 await followup.edit(content=(
-                    f":mag_right:  We found `{total_columns}` columns and `{total_rows}` rows. "
+                    f"  🔍 ** Query Executed: ** `{query}` \n\n"
+                    f"  📊  We found `{total_columns}` columns and `{total_rows}` rows. "
                     f"(download below :arrow_down: )\n\n"
                 ))
 
@@ -161,10 +163,18 @@ async def sql_excel(interaction: discord.Interaction, query: str):
                 excel_buffer.close()
 
             else:
-                result_str = response  # String result
+                result_str = str(response)
+                chunks = split_message(result_str)
 
-                await followup.edit(content=f'```{result_str}```')
+                await followup.edit(content=f'🔍 ** Query Executed: ** `{query} \n`')
 
+                # Send remaining chunks as follow-up messages
+                chunk_count = 0
+                for chunk in chunks:
+                    chunk_count += 1
+                    await interaction.followup.send(f'```{chunk}```')
+                    if chunk_count >= MAX_TABLE_SHOW:
+                        break  # Check if result_str is a file path or a string
         else:
             await followup.edit(content="Failed to retrieve API data.")
 

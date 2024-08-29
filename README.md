@@ -2,7 +2,7 @@
 
 # Link Discord Bot
 
-We have developed **Link**, a Discord bot that connects with the ChainBase blockchain. It's an open-source project that anyone can use.
+We have developed **Link**, a Discord bot that connects with the Chainbase Network. It's an open-source project that anyone can use.
 
 ## Features
 
@@ -43,7 +43,7 @@ CHAINBASE_WEB3_BASE_URL=https://api.chainbase.online/v1
 CHAINBASE_API_KEY=your_chainbase_api_key
 ```
 
-You can obtain the ChainBase API key from the ChainBase console. For the Discord bot token, create a Discord application and generate the token from there.
+You can obtain the Chainbase API key from the Chainbase console. For the Discord bot token, create a Discord application and generate the token from there.
 
 ### Step 3: Install Dependencies
 
@@ -61,11 +61,11 @@ After setting up the environment variables and installing dependencies, run the 
 python main.py
 ```
 
-## What is ChainBase Data Platform?
+## What is Chainbase Data Platform?
 
-ChainBase Data Platform is an all-in-one data infrastructure for Web3 that allows you to index, transform, and utilize large-scale on-chain data. It provides a suite of tools and services to help you build, manage, and scale your Web3 applications. By leveraging enriched on-chain data and streaming computing technologies across one data infrastructure, ChainBase Data Platform automates the indexing and querying of blockchain data, enabling developers to accomplish complex data tasks with ease.
+Chainbase Data Platform is an all-in-one data infrastructure for Web3 that allows you to index, transform, and utilize large-scale on-chain data. It provides a suite of tools and services to help you build, manage, and scale your Web3 applications. By leveraging enriched on-chain data and streaming computing technologies across one data infrastructure, Chainbase Data Platform automates the indexing and querying of blockchain data, enabling developers to accomplish complex data tasks with ease.
 
-For more details, refer to the [ChainBase API Documentation](https://docs.chainbase.com/api-reference/overview).
+For more details, refer to the [Chainbase API Documentation](https://docs.chainbase.com/api-reference/overview).
 
 ## Author
 

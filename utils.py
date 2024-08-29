@@ -160,7 +160,7 @@ def split_message(content, limit=1900):
     return [content[i:i + limit] for i in range(0, len(content), limit)]
 
 
-def generate_random_filename(prefix="ChainBase_", length=10):
+def generate_random_filename(prefix="Chainbase_", length=10):
     """Generate a random filename with a specified prefix."""
     random_str = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
     return f"{prefix}{random_str}.xlsx"
