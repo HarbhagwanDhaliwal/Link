@@ -4,6 +4,12 @@
 
 We have developed **Link**, a Discord bot that connects with the Chainbase Network. It's an open-source project that anyone can use.
 
+## What is Chainbase Data Platform?
+
+Chainbase Data Platform is an all-in-one data infrastructure for Web3 that allows you to index, transform, and utilize large-scale on-chain data. It provides a suite of tools and services to help you build, manage, and scale your Web3 applications. By leveraging enriched on-chain data and streaming computing technologies across one data infrastructure, Chainbase Data Platform automates the indexing and querying of blockchain data, enabling developers to accomplish complex data tasks with ease.
+
+For more details, refer to the [Chainbase API Documentation](https://docs.chainbase.com/api-reference/overview).
+
 ## Features
 
 Link bot allows you to interact with blockchain data using a set of powerful commands:
@@ -125,12 +131,6 @@ sudo systemctl enable my_discord_bot.service
 ```bash
 sudo systemctl status my_discord_bot.service
 ```
-
-## What is Chainbase Data Platform?
-
-Chainbase Data Platform is an all-in-one data infrastructure for Web3 that allows you to index, transform, and utilize large-scale on-chain data. It provides a suite of tools and services to help you build, manage, and scale your Web3 applications. By leveraging enriched on-chain data and streaming computing technologies across one data infrastructure, Chainbase Data Platform automates the indexing and querying of blockchain data, enabling developers to accomplish complex data tasks with ease.
-
-For more details, refer to the [Chainbase API Documentation](https://docs.chainbase.com/api-reference/overview).
 
 ## Author
 
