@@ -96,13 +96,18 @@ After=network.target
 
 [Service]
 Type=simple
-User=YOUR_USERNAME
-WorkingDirectory=/path/to/your/project
-ExecStart=/usr/bin/python3 /path/to/your/project/main.py
+User=root
+WorkingDirectory=/root/Link
+ExecStart=/usr/bin/python3 /root/Link/main.py
+Environment="DISCORD_BOT_TOKEN=your_discord_bot_token"
+Environment="CHAINBASE_SQL_BASE_URL=https://api.chainbase.com/api/v1"
+Environment="CHAINBASE_WEB3_BASE_URL=https://api.chainbase.online/v1"
+Environment="CHAINBASE_API_KEY=your_chainbase_api_key"
 Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
+
 
 ```
 Replace `YOUR_USERNAME` with your Ubuntu username.
