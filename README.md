@@ -32,7 +32,18 @@ git clone https://github.com/HarbhagwanDhaliwal/Link.git
 cd Link
 ```
 
-### Step 2: Set Environment Variables
+## Step 2: Get the API Keys
+
+You will need two API keys to run this bot:
+
+1. **Chainbase API Key**: Used to fetch data from Chainbase.  
+   - [Create a Chainbase account and get your API key](https://console.chainbase.com/).
+
+2. **Discord Token**: Required to interact with Discord.  
+   - [Create a Discord application and get your Token](https://discord.com/developers/applications).
+
+
+### Step 3: Set Environment Variables
 
 Set up the following environment variables in your system:
 
@@ -45,7 +56,7 @@ CHAINBASE_API_KEY=your_chainbase_api_key
 
 You can obtain the Chainbase API key from the Chainbase console. For the Discord bot token, create a Discord application and generate the token from there.
 
-### Step 3: Install Dependencies
+### Step 4: Install Dependencies
 
 Install the required Python dependencies using the `requirements.txt` file:
 
@@ -53,7 +64,7 @@ Install the required Python dependencies using the `requirements.txt` file:
 pip install -r requirements.txt
 ```
 
-### Step 4: Run the Bot
+### Step 5: Run the Bot
 
 After setting up the environment variables and installing dependencies, run the bot using:
 
