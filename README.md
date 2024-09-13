@@ -32,7 +32,7 @@ git clone https://github.com/HarbhagwanDhaliwal/Link.git
 cd Link
 ```
 
-## Step 2: Get the API Keys
+## Step 2: Get the API Key and Discord Token
 
 You will need two API keys to run this bot:
 
