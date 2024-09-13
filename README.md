@@ -71,6 +71,30 @@ After setting up the environment variables and installing dependencies, run the 
 ```bash
 python main.py
 ```
+## Running as a System Service on Ubuntu
+
+To ensure that your Python script (`main.py`) runs continuously as a system service, follow the steps below:
+
+### 1. Create a Service File
+Create a new service file for your project by running the following command:
+
+```bash
+sudo nano /etc/systemd/system/my_discord_bot.service
+
+[Unit]
+Description=My Discord Bot Service
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_USERNAME
+WorkingDirectory=/path/to/your/project
+ExecStart=/usr/bin/python3 /path/to/your/project/main.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
 
 ## What is Chainbase Data Platform?
 
