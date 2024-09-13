@@ -99,10 +99,10 @@ Restart=on-failure
 WantedBy=multi-user.target
 
 ```
-Replace YOUR_USERNAME with your Ubuntu username.
-Replace /path/to/your/project with the actual path to your project directory.
+Replace `YOUR_USERNAME` with your Ubuntu username.
+Replace `/path/to/your/project` with the actual path to your project directory.
 
-### 2. Reload systemd to Apply the New Service
+### 2. Reload `systemd` to Apply the New Service
 
 ```bash
 sudo systemctl daemon-reload
