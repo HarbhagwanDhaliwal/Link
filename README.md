@@ -80,9 +80,12 @@ Create a new service file for your project by running the following command:
 
 ```bash
 sudo nano /etc/systemd/system/my_discord_bot.service
+```
+Add the following content to the file:
 
+```bash
 [Unit]
-Description=My Discord Bot Service
+Description=Link Discord Bot Service
 After=network.target
 
 [Service]
@@ -95,6 +98,33 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 
+```
+Replace YOUR_USERNAME with your Ubuntu username.
+Replace /path/to/your/project with the actual path to your project directory.
+
+### 2. Reload systemd to Apply the New Service
+
+```bash
+sudo systemctl daemon-reload
+```
+
+### 3. Start the Service
+
+```bash
+sudo systemctl start my_discord_bot.service
+```
+
+### 4. Enable the Service to Start on Boot
+
+```bash
+sudo systemctl enable my_discord_bot.service
+```
+
+### 5. Check the Status of the Service
+
+```bash
+sudo systemctl status my_discord_bot.service
+```
 
 ## What is Chainbase Data Platform?
 
