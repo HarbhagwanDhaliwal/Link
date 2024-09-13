@@ -110,8 +110,8 @@ WantedBy=multi-user.target
 
 
 ```
-Replace `YOUR_USERNAME` with your Ubuntu username.
-Replace `/path/to/your/project` with the actual path to your project directory.
+Replace `root` with your Ubuntu username.
+Replace `/root/Link` with the actual path to your project directory.
 
 ### 2. Reload `systemd` to Apply the New Service
 
