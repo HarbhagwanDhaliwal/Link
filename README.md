@@ -75,7 +75,7 @@ pip install -r requirements.txt
 After setting up the environment variables and installing dependencies, run the bot using:
 
 ```bash
-python main.py
+python3 main.py
 ```
 ## Running as a System Service on Ubuntu
 
