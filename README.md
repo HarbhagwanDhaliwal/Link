@@ -34,7 +34,7 @@ cd Link
 
 ## Step 2: Get the API Key and Discord Token
 
-You will need two API keys to run this bot:
+You will need API key and Discord Token to run this bot:
 
 1. **Chainbase API Key**: Used to fetch data from Chainbase.  
    - [Create a Chainbase account and get your API key](https://console.chainbase.com/).
