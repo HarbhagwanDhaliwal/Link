@@ -22,7 +22,10 @@ async def execute_query(sql_query):
     async with aiohttp.ClientSession(timeout=TIMEOUT) as session:
         try:
             async with session.post(f"{CHAINBASE_API_URL}/query/execute", json=data, headers=headers) as response:
-                return await response.json()
+                res = await response.json()
+                print(res)
+                print(response)
+                return res
         except Exception as e:
             print(f"Failed to execute query: {e}")
             return {}

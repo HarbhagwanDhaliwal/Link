@@ -18,7 +18,8 @@ from apis.api_web3 import (api_get_block_by_number,
                            api_get_token_metadata,
                            api_get_token_price,
                            api_get_nft_metadata,
-                           api_resolve_ens_domain
+                           api_resolve_ens_domain,
+                           api_flock_ai
                            )
 
 
@@ -28,8 +29,10 @@ class MyClient(discord.Client):
         self.tree = app_commands.CommandTree(self)
 
     async def setup_hook(self):
-        # Sync global commands
-        await self.tree.sync()
+        try:
+            await self.tree.sync()
+        except Exception as e:
+            print(f"Error syncing commands: {e}")
 
 
 intents = discord.Intents.default()
@@ -57,6 +60,9 @@ async def sql(interaction: discord.Interaction, query: str):
         followup = await interaction.followup.send("Please wait...")
 
         # Process the query
+        # Remove the semicolon if it exists at the end of the query
+        if query.strip().endswith(";"):
+            query = query.strip()[:-1]
         response = await execute_query_and_fetch_results(query)
         if response:
             response_json = json.dumps(response)
@@ -126,6 +132,9 @@ async def sql_excel(interaction: discord.Interaction, query: str):
         followup = await interaction.followup.send("Please wait...")
 
         # Process the query
+        # Remove the semicolon if it exists at the end of the query
+        if query.strip().endswith(";"):
+            query = query.strip()[:-1]
         response = await execute_query_and_fetch_results(query)
         if response:
             response_json = json.dumps(response)
@@ -470,6 +479,41 @@ async def resolve_ens_domain(interaction: discord.Interaction, domain: str, chai
             await followup.edit(content=f'An error occurred: {e}')
         else:
             await interaction.followup.send(content=f'An error occurred: {e}', ephemeral=True)
+
+@client.tree.command(name="ask_ai")
+@app_commands.describe(query="Ask the AI a question and get the response.")
+async def ask_ai(interaction: discord.Interaction, query: str):
+    """Send the user's query to the AI API and return the response."""
+    followup = None
+    try:
+        # Defer the interaction
+        await interaction.response.defer()
+        # Send a follow-up message
+        followup = await interaction.followup.send("Processing your request...")
+
+        # Call the AI API to get the answer to the user's query
+        response = await api_flock_ai(query)
+        if response:
+            result_str = f"**AI's Response**: {response}"
+
+        else:
+            result_str = "Failed to retrieve a response from the AI."
+
+        # Send the result back to the user
+        result_str = str(result_str)
+        chunks = split_message(result_str)  # Split the message if too long
+
+        await followup.edit(content=f'🔍 **Question:** `{query}`\n\n{chunks[0]}')
+
+        for chunk in chunks[1:]:
+            await interaction.followup.send(f'```{chunk}```')
+
+    except Exception as e:
+        if followup:
+            await followup.edit(content=f'An error occurred: {e}')
+        else:
+            await interaction.followup.send(content=f'An error occurred: {e}', ephemeral=True)
+
 
 
 @client.tree.command(name="help")

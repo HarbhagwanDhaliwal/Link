@@ -7,8 +7,17 @@ from config import CHAINBASE_API_WEB3_URL, CHAINBASE_API_KEY, API_TIMEOUT
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Load the system prompt from the file
+system_prompt_file = "apis/system_prompt_with_table_data.txt"
+
+with open(system_prompt_file, "r") as f:
+    system_prompt_for_ai = f.read()
+
+
 # Timeout for API requests
 TIMEOUT = aiohttp.ClientTimeout(total=API_TIMEOUT)
+TIMEOUT_FOR_AI = aiohttp.ClientTimeout(total=40)
+
 
 
 # Function to fetch block details
@@ -175,3 +184,37 @@ async def api_resolve_ens_domain(domain, chain_id, to_block="latest"):
         except Exception as e:
             logging.error(f"Failed to resolve ENS domain: {e}")
             return {'Error': f"Failed to resolve ENS domain: {e}"}
+
+# Function to interact with AI API for help users
+async def api_flock_ai(user_query, system_prompt=system_prompt_for_ai):
+    api_url = "https://vatsalkshah--flock-chainbase-task-model-api.modal.run/inference"
+
+    # Encode parameters in URL format
+    params = {
+        "system_prompt": system_prompt,
+        "content": user_query
+    }
+
+    async with aiohttp.ClientSession(timeout=TIMEOUT_FOR_AI) as session:
+        try:
+            # Send POST request with query parameters in the URL
+            async with session.post(api_url, params=params) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    if "content" in data:
+                        return data["content"]
+                    else:
+                        logging.error("Response does not contain 'content' key")
+                        return {'Error': "Response does not contain 'content' key"}
+                else:
+                    # Log the full response details for debugging
+                    logging.error(f"Unexpected response status: {response.status}")
+                    logging.error(await response.text())  # Log body for further debugging
+                    return {'Error': f"Unexpected response status: {response.status}"}
+        except asyncio.TimeoutError:
+            logging.error("Request timed out while generating SQL query")
+            return {'Error': "Request timed out while generating SQL query"}
+        except Exception as e:
+            logging.error(f"Failed to generate SQL query: {e}")
+            return {'Error': f"Failed to generate SQL query: {e}"}
+
