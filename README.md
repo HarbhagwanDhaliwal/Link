@@ -58,6 +58,7 @@ export DISCORD_BOT_TOKEN=your_discord_bot_token
 export CHAINBASE_SQL_BASE_URL=https://api.chainbase.com/api/v1
 export CHAINBASE_WEB3_BASE_URL=https://api.chainbase.online/v1
 export CHAINBASE_API_KEY=your_chainbase_api_key
+export FLOCK_AUTH_TOKEN=your_flock_model_api_key
 ```
 
 You can obtain the Chainbase API key from the Chainbase console. For the Discord bot token, create a Discord application and generate the token from there.
