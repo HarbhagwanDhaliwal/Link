@@ -2,7 +2,7 @@ import aiohttp
 import asyncio
 import logging
 
-from config import CHAINBASE_API_WEB3_URL, CHAINBASE_API_KEY, API_TIMEOUT
+from config import CHAINBASE_API_WEB3_URL, CHAINBASE_API_KEY, API_TIMEOUT, FLOCK_AUTH_TOKEN
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -189,16 +189,23 @@ async def api_resolve_ens_domain(domain, chain_id, to_block="latest"):
 async def api_flock_ai(user_query, system_prompt=system_prompt_for_ai):
     api_url = "https://vatsalkshah--flock-chainbase-task-model-api.modal.run/inference"
 
-    # Encode parameters in URL format
-    params = {
+    # Request body in JSON format
+    json_body = {
         "system_prompt": system_prompt,
         "content": user_query
     }
 
+    # Headers with Authorization token
+    headers = {
+        "Authorization": f"Bearer {FLOCK_AUTH_TOKEN}",
+        "Content-Type": "application/json",
+        "accept": "application/json"
+    }
+
     async with aiohttp.ClientSession(timeout=TIMEOUT_FOR_AI) as session:
         try:
-            # Send POST request with query parameters in the URL
-            async with session.post(api_url, params=params) as response:
+            # Send POST request with JSON body and headers
+            async with session.post(api_url, json=json_body, headers=headers) as response:
                 if response.status == 200:
                     data = await response.json()
                     if "content" in data:
